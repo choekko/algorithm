@@ -1,1 +1,1 @@
-   console.log(array)
+numArray
