@@ -1,5 +1,5 @@
 let fs = require('fs');
-let input = fs.readFileSync('./test.txt').toString().split('\n');
+let input = fs.readFileSync('./input.txt').toString().split('\n');
 
 let [_, numberOfNeeds] = input.shift().split(' ');
 numberOfNeeds = Number(numberOfNeeds);

@@ -1,5 +1,5 @@
 let fs = require('fs');
-let input = fs.readFileSync('./test.txt').toString().split('\n');
+let input = fs.readFileSync('./input.txt').toString().split('\n');
 
 const initialNumbers = Array.from({length: input[0]}, (_, i) => i + 1);
 

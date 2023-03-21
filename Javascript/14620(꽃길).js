@@ -1,5 +1,5 @@
 let fs = require('fs');
-let input = fs.readFileSync('./test.txt').toString().split('\n');
+let input = fs.readFileSync('./input.txt').toString().split('\n');
 
 const size = input.shift();
 const costMatrix = input.map(line => line.split(' ').map(Number));

@@ -1,5 +1,5 @@
 const fs = require('fs');
-const input = fs.readFileSync('./test.txt').toString().split('\n')
+const input = fs.readFileSync('./input.txt').toString().split('\n')
 const [numberCount, duplicateLimit] = input[0].split(' ').map(Number);
 const numbers = input[1].split(' ').map(Number);
 

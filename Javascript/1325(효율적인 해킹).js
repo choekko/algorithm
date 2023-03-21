@@ -1,51 +1,44 @@
-let fs = require('fs');
-let input = fs.readFileSync('./test.txt').toString().split('\n');
+const fs = require('fs');
+const input = fs.readFileSync('./input.txt').toString().split('\n');
+const [computerCount] = input[0].split(' ').map(Number);
+const edges = input.slice(1).map(edge => edge.split(' ').map(Number));
 
-let graph;
-let checkingArray;
+const solution = (computerCount, edges) => {
+  const edgeInfo = Array(computerCount + 1).fill(null).map(() => []);
 
-input.forEach((line, idx) => {
-  const [end, start] = line.split(' ');
-  if (idx === 0) {
-    const computerAmount = Number(end);
-    checkingArray = Array.from({length: computerAmount + 1}).fill(false);
-    graph = checkingArray.map(() => []);
-    return;
-  }
-  graph[start].push(end);
-})
+  edges.forEach(([end, start]) => {
+    edgeInfo[start].push(end);
+  })
 
-let currentMax = 0;
-let result = [];
+  let maxCount = -Infinity;
+  let result = [];
 
-console.log(graph)
+  for (let start = 1 ; start < computerCount + 1; start++) {
+    const checker = Array(computerCount + 1).fill(false);
+    const stack = [start];
+    let count = 0;
 
-graph.forEach((endList, number) => {
-  if (!number || checkingArray[number]) return;
-  
-  checkingArray[number] = true;
-  let watingStack = endList.map(end => [end, 1]);
-  console.log(watingStack)
+    while (stack.length) {
+      const current = stack.pop();
+      if (checker[current]) continue;
 
-  while (watingStack.length) {
-    const [next, count] = watingStack.pop();
-    console.log()
-    if (checkingArray[next]) {
-      if (count > currentMax) {
-        currentMax = count;
-        result = [number];
-        console.log(number, '-----')
-        continue;
-      }
-      if (count === currentMax) {
-        result.push(number);
-        continue;
-      }
+      count++;
+      checker[current] = true;
+
+      edgeInfo[current].forEach(computer => stack.push(computer));
     }
 
-    checkingArray[next] = true;
-    watingStack = watingStack.concat(graph[next].map(end => [end, count + 1]));
+    if (maxCount < count) {
+      maxCount = count;
+      result = [start];
+      continue;
+    }
+    if (maxCount === count) {
+      result.push(start);
+    }
   }
-})
 
-console.log(result.join(' '))
+  return result.join(' ');
+}
+
+console.log(solution(computerCount, edges))

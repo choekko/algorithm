@@ -1,6 +1,6 @@
 // 다시 풀기
 // let fs = require('fs');
-// let input = fs.readFileSync('./test.txt').toString().split('\n');
+// let input = fs.readFileSync('./input.txt').toString().split('\n');
 
 // const ROW_NUM = input.length;
 // const COL_NUM = input[0].split(' ').length;
