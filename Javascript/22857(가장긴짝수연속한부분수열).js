@@ -6,7 +6,7 @@ const numbers = input[1].split(' ').map(Number);
 
 
 const solution = (numbers, maxDeletionCount) => {
-  const evenNumberCountsInSection = [] // numbers에서 홀수를 만날 때마다, 마지막으로 만난 홀수 이후부터의 짝수 개수를 담는다.
+  const evenNumberCountsInSection = [] // numbers에서 홀수를 만날 때마다, 이전에 마지막으로 만났던 홀수 이후부터의 짝수 개수를 담는다.
 
   let evenNumberCount = 0;
   numbers.forEach((number) => {
