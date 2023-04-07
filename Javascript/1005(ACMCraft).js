@@ -6,7 +6,7 @@ const testCases = [];
 
 for (let i = 1;;) {
   const [buildingCount, ruleCount] = input[i].split(' ').map(Number);
-  const nodeInfos = Array(buildingCount + 1).fill(null).map(() => ({ enteredNodes: [], time: 0 })); // [진입 차수, 진출 노드]
+  const nodeInfos = Array(buildingCount + 1).fill(null).map(() => ({ enteredNodes: [], time: 0 }));
   input[i + 1].split(' ').map(Number).forEach((time, idx) => { nodeInfos[idx + 1].time = time });
 
   for (let j = i + 2; j < i + 2 + ruleCount; j++) {
