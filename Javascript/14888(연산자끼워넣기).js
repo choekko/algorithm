@@ -4,6 +4,11 @@ const input = fs.readFileSync(filePath).toString().trim().split('\n');
 const numbers = input[1].split(' ').map(Number);
 const [plusCount, minusCount, productCount, divisionCount]= input[2].split(' ').map(Number);
 
+/**
+ * 메모리 초과가 나는 코드입니다.
+ * dfs로 다시 풀어봅시다.
+ */
+
 const permutation = (items, n) => {
   if (n === 1) return items.map(item => [item]);
 
