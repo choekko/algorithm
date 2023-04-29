@@ -7,7 +7,7 @@ const solution = (source, target) => {
   // target에서 거꾸로 롤백하면서 source가 나타나는지 확인하기
 
   const traverse = (target) => {
-    if (target === '') return false;
+    if (target.length < source.length) return false;
     if (target === source) return true;
 
     const lastChar = target[target.length - 1];
