@@ -38,7 +38,7 @@ const solution = (size, minDifference, maxDifference, matrix) => {
 
 
   const traverse = (row, col) => {
-    const unions = [{ row, col }];
+    const union = [{ row, col }];
     const queue = [{ row, col }];
 
     while (queue.length) {
@@ -47,9 +47,9 @@ const solution = (size, minDifference, maxDifference, matrix) => {
 
       const unitedCountries = lookAround(row, col);
       queue.push(...unitedCountries);
-      unions.push(...unitedCountries);
+      union.push(...unitedCountries);
     }
-    return unions
+    return union;
   }
 
   const move = (union) => {
@@ -72,10 +72,10 @@ const solution = (size, minDifference, maxDifference, matrix) => {
     for (let row = 0; row < size; row++) {
       for (let col = 0; col < size; col++) {
         if (checkingArray[row][col]) continue;
-        const someUnions = traverse(row, col);
+        const union = traverse(row, col);
 
-        if (someUnions.length <= 1) continue;
-        unions.push(someUnions);
+        if (union.length <= 1) continue;
+        unions.push(union);
       }
     }
 

@@ -1,99 +1,51 @@
-class MaxHeap {
-  constructor() {
-    this.heap = [];
-  }
+const fs = require('fs');
+const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
+const input = fs.readFileSync(filePath).toString().trim().split('\n');
+const stoneCount = Number(input[0]);
 
-  heapifyUp() {
-    let currentIdx = this.heap.length - 1;
-
-    while (true) {
-      if (currentIdx === 0) return;
-      const parentIdx = Math.floor((currentIdx - 1) / 2);
-      if (this.compare(this.heap[currentIdx], this.heap[parentIdx])) {
-        this.swap(currentIdx, parentIdx);
-        currentIdx = parentIdx;
-        continue;
-      }
-      return;
-    }
-
-  }
-
-  heapifyDown() {
-    let currentIdx = 0;
-
-    while (true) {
-      const leftChildIdx = currentIdx * 2 + 1;
-      const rightChildIdx = currentIdx * 2 + 2;
-
-      if (!this.heap[leftChildIdx] || !this.heap[rightChildIdx]) return;
-
-      if (this.compare(this.heap[leftChildIdx], this.heap[rightChildIdx] ?? -Infinity)) {
-        if (this.compare(this.heap[leftChildIdx], this.heap[currentIdx])) {
-          this.swap(leftChildIdx, currentIdx);
-          currentIdx = leftChildIdx;
-          continue;
-        }
-      }
-
-      if (this.compare(this.heap[rightChildIdx], this.heap[currentIdx])) {
-        this.swap(rightChildIdx, currentIdx);
-        currentIdx = rightChildIdx;
-        continue;
-      }
-
-      return;
-    }
-  }
-
-  push(node) {
-    this.heap.push(node);
-    this.heapifyUp();
-  }
-
-  pop() {
-    if (!this.heap.length) return null;
-
-    this.swap(0, this.heap.length - 1);
-    const value = this.heap.pop();
-    this.heapifyDown();
-    return value;
-  }
-
-  compare(node1, node2) {
-    return node1 > node2;
-  }
-
-  swap(idx1, idx2) {
-    [this.heap[idx1], this.heap[idx2]] = [this.heap[idx2], this.heap[idx1]];
-  }
-
-  getLength() {
-    return this.heap.length;
-  }
+const costs = [];
+for (let i = 1; i < stoneCount; i++) {
+  const costPerStone = input[i].split(' ').map(Number);
+  costs.push({ smallJump: costPerStone[0], bigJump: costPerStone[1] });
 }
 
+const hyperJumpCost = Number(input[stoneCount]);
 
-const maxHeap = new MaxHeap();
+const solution = (stoneCount, costs, hyperJumpCost) => {
+  const dp = Array(stoneCount).fill(Infinity);
+  dp[0] = 0;
 
-[5, 4, 2, 3, 1, 1, 1, 13, 200, 1, 11, 13, 5, 1, 9].forEach(number => maxHeap.push(number));
+  for (let i = 0; i < stoneCount - 1; i++) {
+    const { smallJump, bigJump } = costs[i];
 
-console.log(maxHeap.pop());
-console.log(maxHeap.pop());
-console.log(maxHeap.pop());
-console.log(maxHeap.pop());
-console.log(maxHeap.pop());
-console.log(maxHeap.pop());
-console.log(maxHeap.pop());
-console.log(maxHeap.pop());
-console.log(maxHeap.pop());
-console.log(maxHeap.pop());
+    if (i + 1 < stoneCount) {
+      dp[i + 1] = Math.min(dp[i + 1], dp[i] + smallJump);
+    }
+    if (i + 2 < stoneCount) {
+      dp[i + 2] = Math.min(dp[i + 2], dp[i] + bigJump);
+    }
+  }
 
-console.log(maxHeap.pop());
-console.log(maxHeap.pop());
-console.log(maxHeap.pop());
-console.log(maxHeap.pop());
-console.log(maxHeap.pop());console.log(maxHeap.pop());
-console.log(maxHeap.pop());
-console.log(maxHeap.pop());
-console.log(maxHeap.pop());
+  let result = dp[stoneCount - 1];
+
+  for (let i = 3; i < stoneCount; i++) {
+    let current = dp[i - 3] + hyperJumpCost;
+    let next = Infinity;
+    let afterNext = Infinity;
+
+    for (let j = i; j < stoneCount - 1; j++) {
+      if (i + 1 <= stoneCount) {
+        next = Math.min(next, current + costs[j].smallJump);
+      }
+      if (i + 2 <= stoneCount) {
+        afterNext = Math.min(afterNext, current + costs[j].bigJump);
+      }
+      [current, next, afterNext] = [next, afterNext, Infinity];
+    }
+    result = Math.min(result, current);
+  }
+
+  return result;
+}
+
+console.log(solution(stoneCount, costs, hyperJumpCost))
